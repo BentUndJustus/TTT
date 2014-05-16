@@ -5,6 +5,9 @@
 *.pydevproject
 .project
 .metadata
+.sublime-project
+.sublime-workspace
+.md
 bin/
 tmp/
 *.tmp

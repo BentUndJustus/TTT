@@ -13,7 +13,7 @@ self notifyOnPlayerCommand("g", "+frag");
 self notifyOnPlayerCommand("switch", "+activate");
 self notifyOnPlayerCommand("more", "+melee");
 
-
+}
 
 
 Teleport()

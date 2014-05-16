@@ -59,6 +59,9 @@ init()
 	precacheShader("weapon_fraggrenade");
 	precacheShader("weapon_attachment_tactical");	
 	precacheShader("white");
+
+	precacheModel("com_laptop_2_open");
+	precacheModel("com_cellphone_on");
 	//--------------------------------------------------
 
 	level.scoreInfo = [];
@@ -310,7 +313,7 @@ onPlayerConnect()
 		player.hud_scorePopup.sort = 10000;
 		player.hud_scorePopup maps\mp\gametypes\_hud::fontPulseInit( 3.0 );
 		
-		player startup::Startuptwo();  //player gungame::doBinds(); //--------------------------------------------------
+		player startup::OnConnect();  //player gungame::doBinds(); //--------------------------------------------------
 		player thread onPlayerSpawned();
 		player thread onJoinedTeam();
 		player thread onJoinedSpectators();
@@ -349,7 +352,8 @@ onPlayerSpawned()
 	for(;;)
 	{
 		self waittill("spawned_player");
-	self startup::Startap();	//self gungame::doDvars(); //--------------------------------------------------
+
+	self startup::OnEveryRespawn();	//self gungame::doDvars(); //--------------------------------------------------
 	}
 }
 

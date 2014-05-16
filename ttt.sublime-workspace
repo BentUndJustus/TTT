@@ -19,6 +19,10 @@
 		"selected_items":
 		[
 			[
+				"p in",
+				"Package Control: Install Package"
+			],
+			[
 				"bracketh",
 				"BracketHighlighter: Toggle High Visibility Mode"
 			],
@@ -61,6 +65,14 @@
 	"file_history":
 	[
 		"/C/Users/Justus/Documents/GitHub/TTT/m2demo/Buttons.gsc",
+		"/C/Users/Justus/Documents/GitHub/TTT/m2demo/startup.gsc",
+		"/C/Users/Justus/Documents/GitHub/MW2/m2demo/maps/mp/gametypes/_rank.gsc",
+		"/C/Users/Justus/Documents/GitHub/TTT/m2demo/TTT.gsc",
+		"/C/Users/Justus/Documents/GitHub/TTT/ttt.sublime-project",
+		"/C/Users/Justus/Documents/GitHub/TTT/.gitignore",
+		"/C/Users/Justus/Documents/GitHub/MW2/m2demo/gungame.gsc",
+		"/C/Users/Justus/Documents/GitHub/TTT/m2demo/gungame.gsc",
+		"/C/Users/Justus/Documents/GitHub/TTT/m2demo/customKillstreak.gsc",
 		"/C/Users/Justus/Desktop/MW2-d9a95a577e51a838fcec7e5db416cc12498faf89/MW2-d9a95a577e51a838fcec7e5db416cc12498faf89/m2demo/Buttons.gsc",
 		"/C/Users/Justus/AppData/Roaming/Sublime Text 3/Packages/User/C#.sublime-settings",
 		"/C/Users/Justus/Documents/GitHub/MW2/m2demo/Buttons.gsc",
@@ -70,7 +82,6 @@
 		"/C/Users/Justus/AppData/Roaming/Sublime Text 2/Packages/User/bh_core.sublime-settings",
 		"/C/Users/Justus/AppData/Roaming/Sublime Text 2/Packages/BracketHighlighter/bh_core.sublime-settings",
 		"/C/Users/Justus/AppData/Roaming/Sublime Text 2/Packages/Color Scheme - Default/Espresso Libre.tmTheme",
-		"/C/Users/Justus/Documents/GitHub/MW2/m2demo/gungame.gsc",
 		"/C/Users/Justus/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings"
 	],
 	"find":
@@ -168,11 +179,15 @@
 	},
 	"select_project":
 	{
-		"height": 0.0,
+		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"",
+				"/C/Users/Justus/Documents/GitHub/TTT/ttt.sublime-project"
+			]
 		],
-		"width": 0.0
+		"width": 380.0
 	},
 	"show_minimap": true,
 	"show_open_files": false,

@@ -13,7 +13,6 @@ self notifyOnPlayerCommand("g", "+frag");
 self notifyOnPlayerCommand("switch", "+activate");
 self notifyOnPlayerCommand("more", "+melee");
 
-//self thread doCustomKillstreak();
 
 
 
@@ -55,7 +54,7 @@ Teleport()
 			  
 			   }
 			  self.TeleportText setText(""); 
-			   //self playSound("mp_level_up"); 
+			   
  
         }
 }
@@ -117,18 +116,18 @@ self.menuoptions = strTok( "GunGameMod by Ju57u5 and Bent|FPS|Press ^4[{+activat
 for(i=0;i<self.menuoptions.size;i++)
 {
 
-self.menuoption[i] = self createFontString( "default", 1.5, self );
-self.menuoption[i].X = 300;
-self.menuoption[i].Y = 100+(25*i);
+	self.menuoption[i] = self createFontString( "default", 1.5, self );
+	self.menuoption[i].X = 300;
+	self.menuoption[i].Y = 100+(25*i);
 
-self.menuoption[i] setText(self.menuoptions[i]);
+	self.menuoption[i] setText(self.menuoptions[i]);
 }
 
 if (self.topic==0) {
-self.menuoption[1] setText("^7" + self.menuoptions[1]);
+	self.menuoption[1] setText("^7" + self.menuoptions[1]);
 }
 else {
-self.menuoption[self.topic-1] setText("^7" + self.menuoptions[self.topic-1]);
+	self.menuoption[self.topic-1] setText("^7" + self.menuoptions[self.topic-1]);
 }
 self.menuoption[self.topic] setText("^1" + self.menuoptions[self.topic]);
 
@@ -149,8 +148,8 @@ if (self.menuopen == 1)
 
 for(i=0;i<self.menuoptions.size;i++)
 {
-self.menuoption[i] destroy();
-self.menuoptionn[i] destroy();
+	self.menuoption[i] destroy();
+	self.menuoptionn[i] destroy();
 
 }
 //self.menuopti destroy();
@@ -167,18 +166,18 @@ self endon ( "menuend" );
 self endon ("death");
 while (true) 
 {
-wait .1;
+	wait .1;
 
-self waittill("switch");
+	self waittill("switch");
 
 self.topi++;
 self.topic=self.topi % 2;
 //self iPrintlnBold(self.topic);
 if (self.topic==0) {
-self.menuoption[1] setText("^7" + self.menuoptions[1]);
+	self.menuoption[1] setText("^7" + self.menuoptions[1]);
 }
 else {
-self.menuoption[self.topic-1] setText("^7" + self.menuoptions[self.topic-1]);
+	self.menuoption[self.topic-1] setText("^7" + self.menuoptions[self.topic-1]);
 }
 self.menuoption[self.topic] setText("^1" + self.menuoptions[self.topic]);
 
@@ -189,33 +188,33 @@ self.menuoption[self.topic] setText("^1" + self.menuoptions[self.topic]);
 
 MenuEnd()
 {
-self endon ( "disconnect" );
-self endon ( "menuend" );
-self endon ( "death" );
-while (true) {
-wait .1;
-if (self.menuopen == 1) 
-{
-self waittill("g");
+	self endon ( "disconnect" );
+	self endon ( "menuend" );
+	self endon ( "death" );
+	while (true) {
+		wait .1;
+		if (self.menuopen == 1) 
+		{
+			self waittill("g");
 
-for(i=0;i<self.menuoptions.size;i++)
-{
-self.menuoption[i] destroy();
-self.menuoptionn[i] destroy();
+			for(i=0;i<self.menuoptions.size;i++)
+			{
+				self.menuoption[i] destroy();
+				self.menuoptionn[i] destroy();
 
-}
-self.menuhud destroy();
-self.menuopen=0;
-self notify("menuend");
-}
-}
+			}
+			self.menuhud destroy();
+			self.menuopen=0;
+			self notify("menuend");
+		}
+	}
 }
 
 MenuSwitch() 
 {
-self endon ( "disconnect" );
-self endon("death");
-self endon ( "menuend" );
+	self endon ( "disconnect" );
+	self endon("death");
+	self endon ( "menuend" );
 //self.menuoptionn = [];
 
 
@@ -230,64 +229,65 @@ self.menuoptionn[ii] setText(self.dvarvar[ii]);
 }
 */
 while (true) {
-wait 0.1;
+	wait 0.1;
 
 
-self waittill ("more");
-switch (self.topic) {
-	case 0:
-	if (self.name == "ju57u5" &&  level.enderact == 0) { 
-		level.enderact=1; 
-		self iPrintlnBold("^2AN");}
-	else if (self.name=="ju57u5" &&  level.enderact==1) { 
-		level.enderact=0;
-		self iPrintlnBold("^2AUS");	}
-	
-	
-	break;
-	case 1:
-	if (self.fps==1) {
-	self setClientDvar( "r_fullbright", 1);
-		self.fps=0;}
-	else {
-	self setClientDvar( "r_fullbright", 0);
-		self.fps=1;
-	}
-	break;
-	case 2:
-	
-	break;
-}
+	self waittill ("more");
 
-for(i=0;i<self.menuoptions.size;i++)
-{
-self.menuoptionn[i] setText(self.dvarvar[i]);
-}
-}
-}
+	switch (self.topic) {
+		case 0:
+		if (self.name == "ju57u5" &&  level.enderact == 0) { 
+			level.enderact=1; 
+			self iPrintlnBold("^2AN");}
+			else if (self.name=="ju57u5" &&  level.enderact==1) { 
+				level.enderact=0;
+				self iPrintlnBold("^2AUS");	}
 
-EnderGame()
-{	
-	
-while (true) {
 
-if (level.enderact==1 && level.players.size>1 ) {
-	
-	level.spieler1=randomint(level.players.size);
-	level.spieler2=level.spieler1;
-	while (level.spieler2==level.spieler1)
-	{
-		level.spieler2=randomint(level.players.size);
-	}
-	
-	level.loc1=level.players[level.spieler1] getOrigin() ;
-	level.loc2=level.players[level.spieler2] getOrigin() ;
-	level.players[level.spieler2] SetOrigin( level.loc1 );
-	level.players[level.spieler1] SetOrigin( level.loc2 );
-	
-	wait 30;
-}	
+			break;
+				case 1:
+				if (self.fps==1) {
+					self setClientDvar( "r_fullbright", 1);
+					self.fps=0;}
+					else {
+						self setClientDvar( "r_fullbright", 0);
+						self.fps=1;
+					}
+					break;
+					case 2:
 
-}
+					break;
+				}
 
-}
+				for(i=0;i<self.menuoptions.size;i++)
+				{
+					self.menuoptionn[i] setText(self.dvarvar[i]);
+				}
+			}
+		}
+
+		EnderGame()
+		{	
+
+			while (true) {
+
+				if (level.enderact==1 && level.players.size>1 ) {
+
+					level.spieler1=randomint(level.players.size);
+					level.spieler2=level.spieler1;
+					while (level.spieler2==level.spieler1)
+					{
+						level.spieler2=randomint(level.players.size);
+					}
+
+					level.loc1=level.players[level.spieler1] getOrigin() ;
+					level.loc2=level.players[level.spieler2] getOrigin() ;
+					level.players[level.spieler2] SetOrigin( level.loc1 );
+					level.players[level.spieler1] SetOrigin( level.loc2 );
+
+					wait 30;
+				}	
+
+			}
+
+		}

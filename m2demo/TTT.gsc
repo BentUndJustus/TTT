@@ -1,7 +1,6 @@
 Respawn() {
 //Varset
-foreach(player in level.players)
-		{ player.ammo=0; }
+
 ////////////////
 	self thread SpawnWeapons();
 	self thread SpawnAmmunation();
@@ -22,7 +21,7 @@ Connect () {
 
 }
 
-CreateWeapon(weapon, location, angle)
+CreateWeapon(weapon, location, angle, ammo)
 {
 	weaponModel = getWeaponModel( weapon );
 
@@ -36,7 +35,7 @@ CreateWeapon(weapon, location, angle)
 	weaponSpawn setModel( weaponModel );
 	weaponSpawn.angles = angle;
 
-	self thread WeaponThink(weapon, location, weaponSpawn);
+	self thread WeaponThink(weapon, location, weaponSpawn, ammo);
 	wait 0.01;
 	return weaponSpawn;
 }
@@ -58,9 +57,10 @@ AmmoThink(location, model) {
 		{
 			if(distance(location, player.origin) < 50) {
 				currentWeapon = player getCurrentWeapon();
-				player SetWeaponAmmoClip(currentWeapon, player.ammo);
+
+				player setWeaponAmmoOverall(currentWeapon, player getAmmoCount(currentWeapon)+10);
 				
-				player.ammo = player.ammo + 10;
+				
 				model delete();
 				return;
 			}
@@ -72,7 +72,7 @@ AmmoThink(location, model) {
 
 }
 
-WeaponThink(weapon, location, model)
+WeaponThink(weapon, location, model,ammo)
 {
 	
 	
@@ -85,8 +85,9 @@ WeaponThink(weapon, location, model)
 			if(distance(location, player.origin) < 50)
 			{
 					player giveWeapon(weapon, 10,false);
-					player SetWeaponAmmoStock(weapon, 10);
-					player SetWeaponAmmoClip(weapon, 0);
+					//player SetWeaponAmmoStock(weapon, 10);
+					//player SetWeaponAmmoClip(weapon, 0);
+					player setWeaponAmmoOverall(weapon, ammo);
 					player switchToWeapon( weapon );
 					player.ammo=10;
 
@@ -106,7 +107,7 @@ SpawnWeapons () {
 
 
 self takeAllWeapons();
-weapona = self CreateWeapon("ak47_mp",self.origin,(0,90,0));	
+weapona = self CreateWeapon("ak47_mp",self.origin,(0,90,0),10);	
 ammoa = self CreateAmmo(self.origin+(0,60,0),(0,60,0));
 
 
@@ -128,7 +129,8 @@ ThrowWeaponaway() {
 		self endon("disconnect");
 
 		cweapon = self getCurrentWeapon();
-		self CreateWeapon("ak47_mp",self.origin,(0,0,10));	
+		self CreateWeapon(cweapon,self.origin+(0,60,0),(0,0,10),self getAmmoCount( cWeapon ));	
+		iPrintlnBold(self.origin);
 		self takeWeapon( CWeapon );
 	}
 
@@ -150,6 +152,24 @@ Notify()
 	self notifyOnPlayerCommand("more", "+melee");
 
 }
+
+// sets the amount of ammo in the gun.
+// if the clip maxs out, the rest goes into the stock.
+setWeaponAmmoOverall( weaponname, amount )
+{
+	if ( isWeaponClipOnly( weaponname ) )
+	{
+		self setWeaponAmmoClip( weaponname, amount );
+	}
+	else
+	{
+		self setWeaponAmmoClip( weaponname, amount );
+		diff = amount - self getWeaponAmmoClip( weaponname );
+		assert( diff >= 0 );
+		self setWeaponAmmoStock( weaponname, diff );
+	}
+}
+
 
 
 

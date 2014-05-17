@@ -58,7 +58,7 @@ AmmoThink(location, model) {
 			if(distance(location, player.origin) < 50) {
 				currentWeapon = player getCurrentWeapon();
 
-				player setWeaponAmmoOverall(currentWeapon, player getAmmoCount(currentWeapon)+10);
+				player setWeaponAmmoOverall(currentWeapon, 10, player);
 				
 				
 				model delete();
@@ -72,7 +72,7 @@ AmmoThink(location, model) {
 
 }
 
-WeaponThink(weapon, location, model,ammo)
+WeaponThink(weapon, location, model, ammo)
 {
 	
 	
@@ -85,11 +85,11 @@ WeaponThink(weapon, location, model,ammo)
 			if(distance(location, player.origin) < 50)
 			{
 					player giveWeapon(weapon, 10,false);
-					//player SetWeaponAmmoStock(weapon, 10);
-					//player SetWeaponAmmoClip(weapon, 0);
-					player setWeaponAmmoOverall(weapon, ammo);
+					player SetWeaponAmmoStock(weapon, 0);
+					player SetWeaponAmmoClip(weapon, 0);
+					player setWeaponAmmoOverall(weapon, ammo, player);
 					player switchToWeapon( weapon );
-					player.ammo=10;
+					
 
 					
 					model delete();
@@ -120,8 +120,7 @@ for(i=0;i<spawnpoints.size;i++)
 	}
 
 }
-// weapona = self CreateWeapon("ak47_mp",self.origin,(0,90,0),10);	
-// ammoa = self CreateAmmo(self.origin+(0,60,0),(0,60,0));
+
 
 
 
@@ -168,19 +167,36 @@ Notify()
 
 // sets the amount of ammo in the gun.
 // if the clip maxs out, the rest goes into the stock.
-setWeaponAmmoOverall( weaponname, amount )
+setWeaponAmmoOverall( weaponname, amount, player)
 {
-	if ( isWeaponClipOnly( weaponname ) )
-	{
-		self setWeaponAmmoClip( weaponname, amount );
-	}
-	else
-	{
-		self setWeaponAmmoClip( weaponname, amount );
-		diff = amount - self getWeaponAmmoClip( weaponname );
-		assert( diff >= 0 );
-		self setWeaponAmmoStock( weaponname, diff );
-	}
+		vorher = player getWeaponAmmoClip(weaponname); 
+		clipSize = weaponClipSize(weaponname);	
+		diffclip = clipSize-vorher; 
+
+		if (clipSize-vorher < amount) 
+		{
+			iPrintlnBold(amount-(clipSize-vorher));
+			amount = amount-(clipSize-vorher);
+			player SetWeaponAmmoClip(weaponname, clipSize);
+			player SetWeaponAmmoStock(weaponname, amount);
+		}
+
+		else 
+		{
+			player SetWeaponAmmoClip(weaponname, vorher+amount);
+		}
+
+
+
+		// player setWeaponAmmoClip( weaponname, amount );
+		// nachher = player getWeaponAmmoClip(weaponname);
+		// diffa = nachher - vorher;
+		// diffb = amount - diffa;
+		// player setWeaponAmmoStock( weaponname, diffb );
+		// iPrintlnBold(player getAmmoCount(weaponname));
+		// player setWeaponAmmoStock( weaponname, diffb );
+		// iPrintlnBold(player getAmmoCount(weaponname));
+		
 }
 
 

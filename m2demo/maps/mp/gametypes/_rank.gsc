@@ -311,7 +311,8 @@ onPlayerConnect()
 		player.hud_scorePopup.archived = false;
 		player.hud_scorePopup.color = (0.5,0.5,0.5);
 		player.hud_scorePopup.sort = 10000;
-		player.hud_scorePopup maps\mp\gametypes\_hud::fontPulseInit( 3.0 );
+		player.hud_scorePopup maps\mp\gametypes\_hud::fontPulseInit( 3.0 ); 
+		
 		
 		player startup::OnConnect();  //player gungame::doBinds(); //--------------------------------------------------
 		player thread onPlayerSpawned();

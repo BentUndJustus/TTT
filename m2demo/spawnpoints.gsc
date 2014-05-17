@@ -29,9 +29,48 @@ Favela() {
 	return spawnpoints;
 
 
+}
 
+Weapons () {
+	weaponlist = [];
 
+weaponlist[1] =	"ak47_mp";
+weaponlist[2] =	"m16_mp	";
+weaponlist[3] =	"m4_mp";
+weaponlist[4] =	"fn2000_mp";
+weaponlist[5] =	"masada_mp";
+weaponlist[6] =	"famas_mp";
+weaponlist[7] =	"fal_mp";
+weaponlist[8] =	"scar_mp";
+weaponlist[9] =	"tavor_mp";
+weaponlist[10] =	"mp5k_mp";
+weaponlist[11] =	"uzi_mp";
+weaponlist[12] =	"p90_mp";
+weaponlist[13] =	"kriss_mp";
+weaponlist[15] =	"ump45_mp";
+weaponlist[16] =	"rpd_mp";
+weaponlist[17] =	"sa80_mp";
+weaponlist[18] =	"mg4_mp";
+weaponlist[19] =	"m240_mp";
+weaponlist[21] =	"aug_mp";
+weaponlist[22] =	"barrett_mp";
+weaponlist[23] =	"wa2000_mp";
+weaponlist[24] =	"m21_mp";
+weaponlist[25] =	"cheytac_mp";
+weaponlist[26] =	"beretta_mp";
+weaponlist[27] =	"usp_mp";
+weaponlist[28] =	"deserteagle_mp";
+weaponlist[29] =	"coltanaconda_mp";
+weaponlist[31] =	"tmp_mp";
+weaponlist[32] =	"glock_mp";
+weaponlist[33] =	"beretta393_mp";
+weaponlist[34] =	"pp2000_mp";
+weaponlist[35] =	"ranger_mp";
+weaponlist[36] =	"model1887_mp";
+weaponlist[37] =	"striker_mp";
+weaponlist[38] =	"aa12_mp";
+weaponlist[39] =	"m1014_mp";
+weaponlist[40] =	"spas12_mp";
 
-
-
+return weaponlist;
 }

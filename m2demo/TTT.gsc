@@ -1,22 +1,70 @@
+#include common_scripts\utility;
+#include maps\mp\_utility;
+#include maps\mp\gametypes\_hud_util;
+
+
+
 Respawn() {
 //Varset
 
 ////////////////
-	self thread SpawnWeapons();
+	SpawnWeapons();
 	self thread SpawnAmmunation();
 	self thread ThrowWeaponaway();
 	self thread CollectWeapon();
+	self thread bombFix();
 	self takeAllWeapons();
-
+	thread Rundenzaehler();
+	thread ConfigPlayer();
+	self.hasWeapon=0;
 
 }
 
 Connect () {
-	self thread Notify();
 
+	
+	self thread Notify();
+	self clearPerks();
 	
 
 
+
+
+}
+
+Rundenzaehler() {
+	while (1) 
+	{
+		level waittill ( "round_end_finished" );
+		wait 0.1;
+		GetTraitor();	
+	}
+}
+
+
+GetTraitor() {
+	
+	traitor = level.players[randomInt(level.plaers.size)-1];
+	traitor.traitor = 1;
+	traitor iPrintlnBold("You are ^1Traitor");
+	foreach(player in level.players)
+	{
+		if(player.traitor==1) {player notify("menuresponse", game["menu_team"], "axis");}
+		else{player notify("menuresponse", game["menu_team"], "allies");}
+		
+		
+		player setClientDvar("cg_scoreboardHeight","1");
+		player setClientDvar("ui_allow_classchange","0");
+		player setClientDvar("ui_allow_teamchange","0");
+
+	}	
+}
+
+ConfigPlayer() {
+		self waittill("spawned_player");
+		self SetOrigin(-597,-290,7);
+		self takeAllWeapons();
+		self clearPerks();
 
 
 }
@@ -82,15 +130,14 @@ WeaponThink(weapon, location, model, ammo)
 		wait 0.1;
 		foreach(player in level.players)
 		{
-			if(distance(location, player.origin) < 50)
+			if(distance(location, player.origin) < 50 && player.hasWeapon != 1)
 			{
 					player giveWeapon(weapon, 10,false);
 					player SetWeaponAmmoStock(weapon, 0);
 					player SetWeaponAmmoClip(weapon, 0);
 					player setWeaponAmmoOverall(weapon, ammo, player);
 					player switchToWeapon( weapon );
-					
-
+					player.hasWeapon=1;
 					
 					model delete();
 					
@@ -108,11 +155,13 @@ SpawnWeapons () {
 
 self takeAllWeapons();
 spawnpoints = self spawnpoints::Favela();
+weapons = self spawnpoints::Weapons();
 for(i=0;i<spawnpoints.size;i++)
 {
 	if( randomInt(2)==1)
-	{
-		spawned[i] = self CreateWeapon("ak47_mp",spawnpoints[i]+(0,0,3),(0,90,0),10);
+	{	
+		randweapon = weapons[randomInt(weapons.size)];
+		spawned[i] = self CreateWeapon(randweapon,spawnpoints[i]+(0,0,3),(0,90,0),10);
 	}
 	else 
 	{
@@ -135,15 +184,17 @@ SpawnAmmunation() {
 
 ThrowWeaponaway() {
 	self endon ("death");
+	self endon("disconnect");
 	while(1) {
 		self notifyOnPlayerCommand("n", "+actionslot 1");
 		self waittill("n");
-		self endon("disconnect");
+		
 
 		cweapon = self getCurrentWeapon();
 		self CreateWeapon(cweapon,self.origin+(0,60,0),(0,0,10),self getAmmoCount( cWeapon ));	
-		iPrintlnBold(self.origin);
+		self iPrintlnBold(self.origin);
 		self takeWeapon( CWeapon );
+		self.hasWeapon=0;
 	}
 
 
@@ -186,18 +237,23 @@ setWeaponAmmoOverall( weaponname, amount, player)
 			player SetWeaponAmmoClip(weaponname, vorher+amount);
 		}
 
-
-
-		// player setWeaponAmmoClip( weaponname, amount );
-		// nachher = player getWeaponAmmoClip(weaponname);
-		// diffa = nachher - vorher;
-		// diffb = amount - diffa;
-		// player setWeaponAmmoStock( weaponname, diffb );
-		// iPrintlnBold(player getAmmoCount(weaponname));
-		// player setWeaponAmmoStock( weaponname, diffb );
-		// iPrintlnBold(player getAmmoCount(weaponname));
-		
 }
+
+bombFix() // Prevent bomb planting
+{
+self endon("death");
+self endon("disconnect");
+ 
+startweapon = self getCurrentWeapon();
+startoffhand = self getCurrentOffhand();
+wait 5;
+while(1){
+if(self getCurrentWeapon() == "briefcase_bomb_mp"){
+self takeWeapon("briefcase_bomb_mp");
+self iPrintlnBold("^1NO PLANTING"); }
+wait 0.05; }
+}
+
 
 
 

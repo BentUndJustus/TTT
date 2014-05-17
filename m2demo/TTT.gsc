@@ -107,8 +107,21 @@ SpawnWeapons () {
 
 
 self takeAllWeapons();
-weapona = self CreateWeapon("ak47_mp",self.origin,(0,90,0),10);	
-ammoa = self CreateAmmo(self.origin+(0,60,0),(0,60,0));
+spawnpoints = self spawnpoints::Favela();
+for(i=0;i<spawnpoints.size;i++)
+{
+	if( randomInt(2)==1)
+	{
+		spawned[i] = self CreateWeapon("ak47_mp",spawnpoints[i]+(0,0,3),(0,90,0),10);
+	}
+	else 
+	{
+		spawned[i] = self CreateAmmo(spawnpoints[i],(0,60,0));
+	}
+
+}
+// weapona = self CreateWeapon("ak47_mp",self.origin,(0,90,0),10);	
+// ammoa = self CreateAmmo(self.origin+(0,60,0),(0,60,0));
 
 
 

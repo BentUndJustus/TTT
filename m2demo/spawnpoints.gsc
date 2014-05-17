@@ -17,15 +17,20 @@ Favela() {
 	spawnpoints[14] = (-494,1340,152);
 	spawnpoints[15] = (1470,1848,183);
 	spawnpoints[16] = (1665,962,192);
-	// spawnpoints[17] = ();
-	// spawnpoints[18] = ();
-	// spawnpoints[19] = ();
-	// spawnpoints[20] = ();
-	// spawnpoints[21] = ();
-	// spawnpoints[22] = ();
-	// spawnpoints[23] = ();
-	// spawnpoints[24] = ();
-	// spawnpoints[25] = ();
+	spawnpoints[17] = (-982,-333,152);
+	spawnpoints[18] = (-155,-757,308);
+	spawnpoints[19] = (-676,255,144);
+	spawnpoints[20] = (68,306,312);
+	spawnpoints[21] = (-922,-524,5);
+	spawnpoints[22] = (622,-1154,143);
+	spawnpoints[23] = (1016,227,196);
+	spawnpoints[24] = (253,143,-5);
+	spawnpoints[25] = (-1319,-172,8);
+	spawnpoints[26] = (1423,1048,184);
+	spawnpoints[26] = (34,586,176);
+	spawnpoints[26] = (-161,310,171);
+	spawnpoints[26] = (6,-806,32);
+	spawnpoints[26] = (-89,-631,168);
 	return spawnpoints;
 
 

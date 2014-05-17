@@ -9,12 +9,12 @@ Respawn() {
 
 ////////////////
 	SpawnWeapons();
-	self thread SpawnAmmunation();
+	// self thread SpawnAmmunation();
 	self thread ThrowWeaponaway();
-	self thread CollectWeapon();
+	
 	self thread bombFix();
 	self takeAllWeapons();
-	thread Rundenzaehler();
+	level thread Rundenzaehler();
 	thread ConfigPlayer();
 	self.hasWeapon=0;
 
@@ -25,7 +25,8 @@ Connect () {
 	
 	self thread Notify();
 	self clearPerks();
-	
+
+	level GetTraitor();
 
 
 
@@ -36,6 +37,7 @@ Rundenzaehler() {
 	while (1) 
 	{
 		level waittill ( "round_end_finished" );
+		level.traitorcount=0;
 		wait 0.1;
 		GetTraitor();	
 	}
@@ -44,13 +46,34 @@ Rundenzaehler() {
 
 GetTraitor() {
 	
-	traitor = level.players[randomInt(level.plaers.size)-1];
-	traitor.traitor = 1;
-	traitor iPrintlnBold("You are ^1Traitor");
+	rand = randomInt(level.players.size);
+	iPrintlnBold(rand);
+	level.players[rand].traitor=1;
+
+	
 	foreach(player in level.players)
 	{
-		if(player.traitor==1) {player notify("menuresponse", game["menu_team"], "axis");}
-		else{player notify("menuresponse", game["menu_team"], "allies");}
+		if(player.traitor==1 && level.traitorcount==0) 
+		{
+			self.switching_teams = true;
+			self.joining_team = "axis";
+			self.leaving_team = self.pers["team"];
+			self suicide();
+			self maps\mp\gametypes\_menus::addToTeam("axis");
+			player iPrintlnBold("You are ^1Traitor");
+			level.traitorcount++;
+
+
+		}
+		else
+		{
+			self.switching_teams = true;
+			self.joining_team = "allies";
+			self.leaving_team = self.pers["team"];
+			self suicide();
+			self maps\mp\gametypes\_menus::addToTeam("allies"); 
+			player iPrintlnBold("You are ^2Innocent");
+		}
 		
 		
 		player setClientDvar("cg_scoreboardHeight","1");
@@ -62,6 +85,7 @@ GetTraitor() {
 
 ConfigPlayer() {
 		self waittill("spawned_player");
+		wait 0.1;
 		self SetOrigin(-597,-290,7);
 		self takeAllWeapons();
 		self clearPerks();
@@ -200,10 +224,7 @@ ThrowWeaponaway() {
 
 }
 
-CollectWeapon() {
 
-	
-}
 
 Notify()
 {

@@ -8,84 +8,111 @@ Respawn() {
 //Varset
 
 ////////////////
-	SpawnWeapons();
-	// self thread SpawnAmmunation();
-	self thread ThrowWeaponaway();
-	
-	self thread bombFix();
-	self takeAllWeapons();
-	level thread Rundenzaehler();
-	thread ConfigPlayer();
-	self.hasWeapon=0;
-
+	// if (self.counter==0) {level GetTraitor(); self.counter++;}
+	// else{
+		SpawnWeapons();
+		
+		self thread ThrowWeaponaway();
+		
+		self thread bombFix();
+		self takeAllWeapons();
+		//level thread Rundenzaehler();
+		
+		
+		self.hasWeapon=0;
+	// }
 }
 
 Connect () {
-
-	
+	self.counter=0;
+	self maps\mp\gametypes\_menus::addToTeam("allies"); 
 	self thread Notify();
 	self clearPerks();
 
-	level GetTraitor();
+	self thread DoText();
+	
+	
 
+}
+
+DoText() {
+	self.hud = createRectangle("BOTTOMRIGHT", "BOTTOMRIGHT", 0, 0, 180, 60, (0.40, 0.40, 0.40), "white",0 ,0.5);
+	self.menuopti = self createFontString( "default", 1.5, self );
+	self.menuopti setPoint("BOTTOMRIGHT", "BOTTOMRIGHT", -5, -30);	
+	self.menuopti setText("Preparing...");	
 
 
 
 }
+
 
 Rundenzaehler() {
 	while (1) 
 	{
-		level waittill ( "round_end_finished" );
 		level.traitorcount=0;
+		//self.menuopti setText("Preparing...");	
+		level GetTraitor();	
 		wait 0.1;
-		GetTraitor();	
+		level waittill ( "round_end_finished" );
 	}
 }
 
 
 GetTraitor() {
 	
+	
 	rand = randomInt(level.players.size);
-	iPrintlnBold(rand);
+	
 	level.players[rand].traitor=1;
-
+	
 	
 	foreach(player in level.players)
 	{
 		if(player.traitor==1 && level.traitorcount==0) 
-		{
-			self.switching_teams = true;
-			self.joining_team = "axis";
-			self.leaving_team = self.pers["team"];
-			self suicide();
-			self maps\mp\gametypes\_menus::addToTeam("axis");
-			player iPrintlnBold("You are ^1Traitor");
+		{	
+			
+			self thread ShowTraitor(player);
 			level.traitorcount++;
-
+			self thread Traitortester(player);
 
 		}
 		else
-		{
-			self.switching_teams = true;
-			self.joining_team = "allies";
-			self.leaving_team = self.pers["team"];
-			self suicide();
-			self maps\mp\gametypes\_menus::addToTeam("allies"); 
-			player iPrintlnBold("You are ^2Innocent");
+		{	
+			
+			self thread ShowInnocent(player);
+			
 		}
 		
-		
-		player setClientDvar("cg_scoreboardHeight","1");
-		player setClientDvar("ui_allow_classchange","0");
-		player setClientDvar("ui_allow_teamchange","0");
+		deathcounter=0;
 
 	}	
 }
 
+ShowTraitor(player) {
+	
+	 if (player==self)
+	 {
+		wait 10;
+		self.menuopti setText("^1Traitor");
+	 }
+	
+}
+
+ShowInnocent(player) {
+	
+	 if (player==self) 
+	 {
+		wait 10;
+		self.menuopti setText("^2Innocent");
+	 }
+	
+}
+
+
+
 ConfigPlayer() {
 		self waittill("spawned_player");
-		wait 0.1;
+		wait 1;
 		self SetOrigin(-597,-290,7);
 		self takeAllWeapons();
 		self clearPerks();
@@ -127,7 +154,7 @@ AmmoThink(location, model) {
 		wait 0.1;
 		foreach(player in level.players)
 		{
-			if(distance(location, player.origin) < 50) {
+			if(distance(location, player.origin) < 50 && player.hasWeapon==1) {
 				currentWeapon = player getCurrentWeapon();
 
 				player setWeaponAmmoOverall(currentWeapon, 10, player);
@@ -262,23 +289,109 @@ setWeaponAmmoOverall( weaponname, amount, player)
 
 bombFix() // Prevent bomb planting
 {
-self endon("death");
-self endon("disconnect");
- 
-startweapon = self getCurrentWeapon();
-startoffhand = self getCurrentOffhand();
-wait 5;
-while(1){
-if(self getCurrentWeapon() == "briefcase_bomb_mp"){
-self takeWeapon("briefcase_bomb_mp");
-self iPrintlnBold("^1NO PLANTING"); }
-wait 0.05; }
+	self endon("death");
+	self endon("disconnect");
+
+	startweapon = self getCurrentWeapon();
+	startoffhand = self getCurrentOffhand();
+	wait 5;
+	while(1){
+		if(self getCurrentWeapon() == "briefcase_bomb_mp")
+		{
+			self takeWeapon("briefcase_bomb_mp");
+			self iPrintlnBold("^1NO PLANTING"); 
+		}
+			wait 0.05;
+	 }
+}
+
+// initTestClients(numberOfTestClients)
+// {
+// 	for(i = 0; i < numberOfTestClients; i++)
+// 	{
+// 		ent[i] = addtestclient();
+
+// 		if (!isdefined(ent[i]))
+// 		{
+// 			wait 1;
+// 			continue;
+// 		}
+
+// 		ent[i].pers["isBot"] = true;
+// 		ent[i] thread initIndividualBot();
+// 		wait 0.1;
+// 	}
+// }
+
+Traitortester(player) {
+	level.deathcounter=0;
+
+	while (1) {
+		wait 0.01;
+		if (player.health<1)
+		{
+			
+				
+				iPrintlnBold("^2Innocents WIN");
+				maps\mp\gametypes\_gamelogic::forceEnd();
+
+			
+
+		}
+
+		else {
+
+			foreach (player in level.players) 
+			{
+				if (player.health<1) {
+					level.deathcounter++;
+				}
+			}
+			if (level.deathcounter>level.players.size-2)
+			{
+				
+				
+				iPrintlnBold("^1Traitors WIN");
+				maps\mp\gametypes\_gamelogic::forceEnd();
+				
+			}
+
+		}
+			
+	}
+
+
+
 }
 
 
 
-
-
+createRectangle(align, relative, x, y, width, height, color, shader, sort, alpha)
+{
+    boxElem = newClientHudElem(self);
+    boxElem.elemType = "bar";
+    if(!level.splitScreen)
+    {
+        boxElem.x = -2;
+        boxElem.y = -2;
+    }
+    boxElem.width = width;
+    boxElem.height = height;
+    boxElem.align = align;
+    boxElem.relative = relative;
+    boxElem.xOffset = 0;
+    boxElem.yOffset = 0;
+    boxElem.children = [];
+    boxElem.sort = sort;
+    boxElem.color = color;
+    boxElem.alpha = alpha;
+    boxElem.shader = shader;
+    boxElem setParent(level.uiParent);
+    boxElem setShader(shader, width, height);
+    boxElem.hidden = false;
+    boxElem setPoint(align, relative, x, y);
+    return boxElem;
+}
 
 
 

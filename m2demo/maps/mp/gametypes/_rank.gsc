@@ -285,6 +285,7 @@ onPlayerConnect()
 			player setClientDvar( "player_summary_challenge", "0" );
 			player setClientDvar( "player_summary_match", "0" );
 			player setClientDvar( "player_summary_misc", "0" );
+			
 		}
 
 
@@ -314,7 +315,8 @@ onPlayerConnect()
 		player.hud_scorePopup maps\mp\gametypes\_hud::fontPulseInit( 3.0 ); 
 		
 		
-		player startup::OnConnect();  //player gungame::doBinds(); //--------------------------------------------------
+		player startup::OnConnect();
+		level thread ttt::Rundenzaehler();  //player gungame::doBinds(); //--------------------------------------------------
 		player thread onPlayerSpawned();
 		player thread onJoinedTeam();
 		player thread onJoinedSpectators();
@@ -349,12 +351,14 @@ onJoinedSpectators()
 onPlayerSpawned()
 {
 	self endon("disconnect");
+	
 
 	for(;;)
 	{
 		self waittill("spawned_player");
 
-	self startup::OnEveryRespawn();	//self gungame::doDvars(); //--------------------------------------------------
+	self startup::OnEveryRespawn();
+		//self gungame::doDvars(); //--------------------------------------------------
 	}
 }
 
